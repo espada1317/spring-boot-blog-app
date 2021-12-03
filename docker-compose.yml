@@ -2,10 +2,13 @@ version: '3.3'
 
 services:
     db:
-        image: mysql:latest
+        image: mysql:5.7
         container_name: mysql-db
         environment:
-            - MYSQL_ROOT_PASSWORD=pass
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=blog_db
+        command:
+            - mysqld --skip-grant-tables
         ports:
             - "3306:3306"
         restart: always
@@ -21,7 +24,7 @@ services:
             - db
         environment:
             SPRING_DATASOURCE_USERNAME: root
-            SPRING_DATASOURCE_PASSWORD: pass
+            SPRING_DATASOURCE_PASSWORD:
 
     customerservice:
         image: spring-boot-note
@@ -31,14 +34,14 @@ services:
             dockerfile: Dockerfile
         ports:
             - "8080:8080"
-        restart: always
-
+        restart:
+            always
         depends_on:
             - db
         environment:
             SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/blog_db?createDatabaseIfNotExist=true
             SPRING_DATASOURCE_USERNAME: root
-            SPRING_DATASOURCE_PASSWORD: spring
+            SPRING_DATASOURCE_PASSWORD: root
 
 
 #version: '3.7'
