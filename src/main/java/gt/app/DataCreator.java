@@ -33,17 +33,17 @@ public class DataCreator {
     public void initData(){
         log.info("Context Refreshed !!, Initializing Data... ");
 
-        Authority adminAuthority = new Authority();
-        adminAuthority.setName(Constants.ROLE_ADMIN);
-        authorityService.save(adminAuthority);
-
-        Authority userAuthority = new Authority();
-        userAuthority.setName(Constants.ROLE_USER);
-        authorityService.save(userAuthority);
-
-        String pwd = "$2a$10$UtqWHf0BfCr41Nsy89gj4OCiL36EbTZ8g4o/IvFN2LArruHruiRXO"; // to make it faster //value is 'pass'
-
         try {
+            Authority adminAuthority = new Authority();
+            adminAuthority.setName(Constants.ROLE_ADMIN);
+            authorityService.save(adminAuthority);
+
+            Authority userAuthority = new Authority();
+            userAuthority.setName(Constants.ROLE_USER);
+            authorityService.save(userAuthority);
+
+            String pwd = "$2a$10$UtqWHf0BfCr41Nsy89gj4OCiL36EbTZ8g4o/IvFN2LArruHruiRXO"; // to make it faster //value is 'pass'
+
             User adminUser = new User("system", "System", "Tiwari", "system@email");
             adminUser.setPassword(pwd);
             adminUser.setAuthorities(authorityService.findByNameIn(Constants.ROLE_ADMIN, Constants.ROLE_USER));

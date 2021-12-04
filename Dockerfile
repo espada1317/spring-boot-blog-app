@@ -12,10 +12,13 @@ COPY ./src ./src
 COPY ./pom.xml ./pom.xml
 
 RUN ./mvnw dependency:go-offline -B
-# RUN ./mvnw package -DskipTests
+RUN ./mvnw install -DskipTests
 
 VOLUME /tmp
 VOLUME /X/attachments
 COPY target/*.jar spring-boot-note-app.jar
 
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/spring-boot-note-app.jar"]
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","/spring-boot-note-app.jar"]
+
