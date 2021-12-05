@@ -15,6 +15,10 @@ pipeline {
             defaultValue:false,
             description:'Want to run tests on Frontend?'
         )
+        booleanParam(name:'CONTINOUS_DELIVERY',
+            defaultValue:false,
+            description:'Want to make Continous Delivery?'
+        )
     }
 
     tools {
@@ -26,12 +30,12 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building application!'
-                
+
                 git branch: 'master', url: 'https://github.com/espada1317/spring-boot-blog-app.git'
-                
+
                 bat "mvn install -DskipTests"
             }
-            
+
             post {
                 failure {
                     expression {
@@ -41,15 +45,15 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Testing Backend')
         {
             steps {
                 echo 'Testing Backend stated!'
-            
+
                 bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-            
+
             post {
                 success {
                     junit '**/*.xml'
@@ -57,7 +61,7 @@ pipeline {
                     //junit '**/target/surefire-reports/TEST-*.xml'
                     //archiveArtifacts 'target/*.jar'
                 }
-                
+
                 failure {
                     expression {
                         env.ON_SUCCESS_SEND_EMAIL == false
@@ -66,7 +70,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Testing Frontend')
         {
             when {
@@ -78,8 +82,25 @@ pipeline {
                 echo "Testing Frontend! \nValue of TESTING_FRONTEND is ${env.TESTING_FRONTEND}"
             }
         }
+
+        stage('Continous Delivery')
+        {
+            when {
+                expression {
+                    params.CONTINOUS_DELIVERY == true
+                }
+            }
+            steps {
+                echo "Continous Delivery started!"
+
+                bat "docker build -t spring-boot-note-app . && \
+                    docker login -u espada1317 -p sunsetKatze_1317 && \
+                    docker tag spring-boot-note-app:latest espada1317:spring_boot_blog && \
+                    docker push"
+            }
+        }
     }
-    
+
     post {
         always {
             script {
@@ -87,9 +108,9 @@ pipeline {
                     echo 'Deleting directory!'
                     cleanWs()
                 }
-            }   
+            }
         }
-        
+
         success {
             script {
                 if(env.ON_SUCCESS_SEND_EMAIL)
@@ -100,7 +121,7 @@ pipeline {
                 }
             }
         }
-        
+
         unstable {
             script {
                     echo "Send email unstable job name: ${JOB_NAME}, build number: ${BUILD_NUMBER}, build url: ${BUILD_URL} "
@@ -108,7 +129,7 @@ pipeline {
                     echo 'Email sent'
             }
         }
-        
+
         failure {
             script {
                 if(env.ON_FAILURE_SEND_EMAIL)
