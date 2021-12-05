@@ -2,34 +2,34 @@ pipeline {
     agent any
 
     environment {
-        ON_SUCCESS_SEND_EMAIL = true
-        ON_FAILURE_SEND_EMAIL = true
+//         ON_SUCCESS_SEND_EMAIL = true
+//         ON_FAILURE_SEND_EMAIL = true
         REGISTRY = "espada1317/spring_boot_blog"
         REGISTRY_CREDENTIAL = 'dockerhub_id'
         DOCKER_IMAGE = ''
     }
-
-    parameters {
-        booleanParam(name:'CLEAN_WORKSPACE',
-            defaultValue:false,
-            description:'Want to delete build directory?'
-        )
-        booleanParam(name:'TESTING_FRONTEND',
-            defaultValue:false,
-            description:'Want to run tests on Frontend?'
-        )
-        booleanParam(name:'CONTINOUS_DELIVERY',
-            defaultValue:false,
-            description:'Want to make Continous Delivery?'
-        )
-    }
+//
+//     parameters {
+//         booleanParam(name:'CLEAN_WORKSPACE',
+//             defaultValue:false,
+//             description:'Want to delete build directory?'
+//         )
+//         booleanParam(name:'TESTING_FRONTEND',
+//             defaultValue:false,
+//             description:'Want to run tests on Frontend?'
+//         )
+//         booleanParam(name:'CONTINOUS_DELIVERY',
+//             defaultValue:false,
+//             description:'Want to make Continous Delivery?'
+//         )
+//     }
 
     tools {
         maven "MVN3"
         jdk "JDK17"
     }
 
-    stages {
+//     stages {
 //         stage('Build') {
 //             steps {
 //                 echo 'Building application!'
@@ -85,7 +85,7 @@ pipeline {
 //                 echo "Testing Frontend! \nValue of TESTING_FRONTEND is ${env.TESTING_FRONTEND}"
 //             }
 //         }
-
+    stages {
         stage('Cloning our Git') {
             steps {
                 git branch: 'master', url: 'https://github.com/espada1317/spring-boot-blog-app.git'
@@ -112,10 +112,10 @@ pipeline {
 
         stage('Cleaning up') {
             steps {
-                sh "docker rmi $REGISTRY:$BUILD_NUMBER"
+                bat "docker rmi $REGISTRY:$BUILD_NUMBER"
             }
         }
-
+    }
 //         stage('Continous Delivery')
 //         {
 //             when {
@@ -176,7 +176,7 @@ pipeline {
 //             }
 //         }
 //     }
-}
+// }
 
 
 
