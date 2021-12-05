@@ -116,6 +116,7 @@ pipeline {
             }
         }
     }
+}
 //         stage('Continous Delivery')
 //         {
 //             when {
