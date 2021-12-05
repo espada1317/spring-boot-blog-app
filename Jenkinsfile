@@ -100,11 +100,8 @@ pipeline {
                     docker.withRegistry('', REGISTRY_CREDENTIAL) {
                         DOCKER_IMAGE.push()
                     }
+                }
             }
-//                 bat "docker build -t spring-boot-note-app . && \
-//                     docker login -u espada1317 -p sunsetKatze_1317 && \
-//                     docker tag spring-boot-note-app:latest espada1317:spring_boot_blog && \
-//                     docker push"
         }
     }
 
@@ -150,3 +147,10 @@ pipeline {
         }
     }
 }
+
+
+
+//                 bat "docker build -t spring-boot-note-app . && \
+//                     docker login -u espada1317 -p sunsetKatze_1317 && \
+//                     docker tag spring-boot-note-app:latest espada1317:spring_boot_blog && \
+//                     docker push"
