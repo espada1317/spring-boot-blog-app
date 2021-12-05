@@ -116,7 +116,7 @@ pipeline
                     echo "Started Continous Delivery!"
 
                     bat "docker build -t spring-boot-note-app . && \
-                        docker tag spring-boot-note-app:$BUILD_NUMBER $REGISTRY && \
+                        docker tag spring-boot-note-app:latest $REGISTRY:$BUILD_NUMBER && \
                         docker push $REGISTRY"
 
                     bat "docker rmi $REGISTRY:$BUILD_NUMBER"
