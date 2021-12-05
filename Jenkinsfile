@@ -95,7 +95,7 @@ pipeline {
         stage('Building our image') {
             steps {
                 script {
-                    dockerImage = docker.build REGISTRY + ":$BUILD_NUMBER"
+                    DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
                 }
             }
         }
