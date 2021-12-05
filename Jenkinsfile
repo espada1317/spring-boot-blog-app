@@ -19,9 +19,12 @@ pipeline
         booleanParam(name:'TESTING_FRONTEND',
             defaultValue:false,
             description:'Want to run tests on Frontend?')
-        booleanParam(name:'CONTINOUS_DELIVERY',
+        booleanParam(name:'CONTINUOUS_DELIVERY',
             defaultValue:false,
-            description:'Want to make Continous Delivery?')
+            description:'Want to make Continuous Delivery?')
+        booleanParam(name:'CONTINUOUS_DEPLOYMENT',
+            defaultValue:false,
+            description:'Want to make Continuous Deployment?')
     }
 
     tools {
@@ -100,26 +103,44 @@ pipeline
             }
         }
 
-        stage('Continous Delivery')
+        stage('Continuous Delivery')
         {
             when
             {
                 expression
                 {
-                    params.CONTINOUS_DELIVERY == true
+                    params.CONTINUOUS_DELIVERY == true
                 }
             }
             steps
             {
                 script
                 {
-                    echo "Started Continous Delivery!"
+                    echo "Started Continuous Delivery!"
 
                     bat "docker build -t spring-boot-note-app . && \
                         docker tag spring-boot-note-app:latest $REGISTRY:latest && \
                         docker push $REGISTRY"
 
                     bat "docker rmi $REGISTRY"
+                }
+            }
+        }
+
+        stage('Continuous Deployment')
+        {
+            when
+            {
+                expression
+                {
+                    params.CONTINUOUS_DEPLOYMENT == true
+                }
+            }
+            steps
+            {
+                script
+                {
+                    echo "Started Continuous Deployment!"
                 }
             }
         }
