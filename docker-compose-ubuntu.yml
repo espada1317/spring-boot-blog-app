@@ -2,9 +2,7 @@ version: '3.7'
 
 services:
     spring_boot:
-        build:
-            context: .
-            dockerfile: Dockerfile
+        image: espada1317/spring_boot_blog
         env_file: ./.env
         ports:
             - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
@@ -22,7 +20,7 @@ services:
             SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT : org.hibernate.dialect.MySQL5InnoDBDialect
 
     db:
-        image: "mysql:5.7"
+        image: mysql:5.7
         env_file: ./.env
         ports:
             - $MYSQLDB_LOCAL_PORT:$MYSQLDB_DOCKER_PORT
