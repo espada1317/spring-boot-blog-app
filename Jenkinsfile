@@ -4,6 +4,9 @@ pipeline {
     environment {
         ON_SUCCESS_SEND_EMAIL = true
         ON_FAILURE_SEND_EMAIL = true
+        REGISTRY = "espada1317/spring_boot_blog"
+        REGISTRY_CREDENTIAL = 'dockerhub_id'
+        DOCKER_IMAGE = ''
     }
 
     parameters {
@@ -93,10 +96,17 @@ pipeline {
             steps {
                 echo "Continous Delivery started!"
 
-                bat "docker build -t spring-boot-note-app . && \
-                    docker login -u espada1317 -p sunsetKatze_1317 && \
-                    docker tag spring-boot-note-app:latest espada1317:spring_boot_blog && \
-                    docker push"
+                    script{
+                        DOCKER_IMAGE = docker.build REGISTRY + ":$BUILD_NUMBER"
+
+                        docker.withRegistry('', REGISTRY_CREDENTIAL) {
+                            DOCKER_IMAGE.push()
+                        }
+                    }
+//                 bat "docker build -t spring-boot-note-app . && \
+//                     docker login -u espada1317 -p sunsetKatze_1317 && \
+//                     docker tag spring-boot-note-app:latest espada1317:spring_boot_blog && \
+//                     docker push"
             }
         }
     }
@@ -108,6 +118,7 @@ pipeline {
                     echo 'Deleting directory!'
                     cleanWs()
                 }
+                bat "docker rmi $REGISTRY:$BUILD_NUMBER"
             }
         }
 
