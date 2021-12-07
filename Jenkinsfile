@@ -142,7 +142,7 @@ pipeline
                 {
                     echo "Started Continuous Deployment!"
 
-                    bat "ssh -p 3022 espada@127.0.0.1 \"cd ~/SpringBootBlog/ && docker-compose up\""
+                    bat "ssh -p 3022 espada@127.0.0.1 \"cd ~/SpringBootBlog/ && docker-compose up\" &"
                 }
             }
         }
