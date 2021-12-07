@@ -142,8 +142,8 @@ pipeline
                 {
                     echo "Started Continuous Deployment!"
 
-                    bat "ssh -p 3022 espada@127.0.0.1 && \
-                        echo qweasd"
+                    bat "ssh -p 3022 espada@127.0.0.1"
+                    bat "echo qweasd"
 
                     sh "cd ~/SpringBootBlog/ && \
                         docker-compose up"
