@@ -15,7 +15,6 @@ RUN ./mvnw dependency:go-offline -B
 RUN ./mvnw install -DskipTests
 
 VOLUME /tmp
-VOLUME /X/attachments
 COPY target/*.jar spring-boot-note-app.jar
 
 EXPOSE 8080
